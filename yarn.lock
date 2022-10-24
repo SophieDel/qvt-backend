@@ -950,6 +950,11 @@ type-is@~1.6.18:
     media-typer "0.3.0"
     mime-types "~2.1.24"
 
+ui2@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/ui2/-/ui2-1.4.0.tgz#8d2269063ce1f3ebada037f63bc43708166eb502"
+  integrity sha512-TCXYSuKFfbIt71v/LLJxl3B1OaKNlw1O3OWnz6nSNN9hlMHKgmnD8rh/b6jRy0kJglPxq5G3xNPi0zkOJq2oCQ==
+
 uid2@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/uid2/-/uid2-1.0.0.tgz#ef8d95a128d7c5c44defa1a3d052eecc17a06bfb"
