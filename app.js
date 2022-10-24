@@ -1,4 +1,6 @@
 var express = require('express');
+require("dotenv").config()
+require("./models/connection")
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
