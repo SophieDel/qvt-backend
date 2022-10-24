@@ -9,7 +9,7 @@ router.post("/new", (req, res) => {
   // Par cette route on ajoute un nouvel article dans la base de données
 
   // On vérifie que tous les champs nécessaires à la création d'une nouvelle entrée dans la base articles soient tous rentrés
-  // Le champ illustration est optionnel (parfois pas d'illustration pertinente)
+  // Le champ illustration est optionnel (parfois pas d'illustration pertintente disponible)
   if (
     !checkBody(req.body, ["titre", "theme", "resume", "lien"])
   ) {
