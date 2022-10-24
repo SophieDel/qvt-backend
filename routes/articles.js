@@ -20,7 +20,7 @@ router.post("/new", (req, res) => {
       hashtags: hashtags,
     });
   
-  
+})
   
   
   
