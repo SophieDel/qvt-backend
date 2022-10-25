@@ -11,7 +11,8 @@ const bcrypt = require('bcryptjs');
 
 //ROUTE SIGNUP
 router.post('/signup', (req, res) => {
-  if (!checkBody(req.body, ['nom', 'prenom', 'email', 'mdp', 'poste', 'genre', 'equipe', 'service'])){
+  console.log('req.body', req.body)
+  if (!checkBody(req.body, ['nom', 'prenom', 'email', 'mdp', 'poste', 'genre', 'equipe', 'service', 'cgu', 'manager', 'RGPDParternaire', 'RGPDqvt'])){
     res.json({ result: false, error: 'Missing or empty fields' });
     return;
   }
@@ -30,13 +31,13 @@ router.post('/signup', (req, res) => {
         mdp : hash,
         token: uid2(32),
         //datenaissance : req.body.datenaissance,
-        // manager : req.body.manager,
+        manager : req.body.manager,
         poste : req.body.poste,
         service : req.body.service,
         equipe : req.body.equipe,
-        // RGPDqvt : req.body.RGPDqvt,
-        // RGPDParternaire : req.body.RGPDParternaire,
-        // cgu : req.body.cgu,
+        RGPDqvt : req.body.RGPDqvt,
+        RGPDParternaire : req.body.RGPDParternaire,
+        cgu : req.body.cgu,
       });
 
       newUser.save().then(data => {
