@@ -113,6 +113,7 @@ router.post('/Qhebdo/:token', (req, res) => {
     })
 
       data.QHebdo.push(reponse)
+      data.save();
       console.log (data);
         res.json({ result: true});
       

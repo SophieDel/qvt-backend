@@ -56,8 +56,9 @@ const userSchema = mongoose.Schema({
   RGPDParternaire: Boolean,
   cgu: Boolean,
  // questionnaire: { type: mongoose.Schema.Types.ObjectId, ref: 'questionnaires' },
-  QHebdo : [QHebdoSchema],
+
   questionnairePerso: questionnairePersoSchema,
+  QHebdo : [QHebdoSchema],
   });
 
 
