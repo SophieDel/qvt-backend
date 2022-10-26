@@ -1,5 +1,13 @@
 const mongoose = require('mongoose');
 
+// Réponses par thème
+const questionnairePersoSchema = mongoose.Schema({
+  sante: { type : Array , "default" : [] },
+  conditions: { type : Array , "default" : [] },
+  epanouissement: { type : Array , "default" : [] },
+stress: { type : Array , "default" : [] },
+ });
+
 const userSchema = mongoose.Schema({
   genre : String,
   nom : String,
@@ -15,7 +23,7 @@ const userSchema = mongoose.Schema({
   RGPDqvt : Boolean,
   RGPDParternaire : Boolean,
   cgu: Boolean,
- // questionnaire: { type: mongoose.Schema.Types.ObjectId, ref: 'questionnaires' },
+ questionnairePerso: questionnairePersoSchema,
   });
 
 const User = mongoose.model('users', userSchema);
