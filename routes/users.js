@@ -106,6 +106,7 @@ const reponse = ({
 })
 
   data.QHebdo.push(reponse)
+  data.save();
   console.log (data);
     res.json({ result: true});
   
