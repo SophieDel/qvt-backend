@@ -32,6 +32,12 @@ const questionnairePersoSchema = mongoose.Schema({
   Q34: String,
 });
 
+const QHebdoSchema = mongoose.Schema ({
+  Q1 : Number,
+  Q2 : Number,
+  Q3 : Number,
+});
+
 const userSchema = mongoose.Schema({
   genre: String,
   nom: String,
@@ -48,6 +54,7 @@ const userSchema = mongoose.Schema({
   RGPDParternaire: Boolean,
   cgu: Boolean,
   questionnairePerso: questionnairePersoSchema,
+  QHebdo : [QHebdoSchema],
 });
 
 const User = mongoose.model("users", userSchema);

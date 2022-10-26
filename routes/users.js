@@ -71,4 +71,45 @@ router.post('/signin', (req, res) => {
 
 //ROUTE MDP OUBLIE PRIO 24
 
+//ROUTE Questionnaire Hebdo
+router.post('/Qhebdo/:token', (req, res) => {
+  // if (!checkBody(req.body, ['nom', 'prenom', 'email', 'mdp', 'poste', 'genre', 'equipe', 'service', 'cgu', 'manager', 'RGPDParternaire', 'RGPDqvt'])){
+  //   res.json({ result: false, error: 'Merci de remplir tous les champs' });
+  //   return;
+  // }
+
+  User.findOne({ token: req.params.token }).then(data => {
+    // if (data === null) {
+    //   const hash = bcrypt.hashSync(req.body.mdp, 10);
+
+//   const newUser = new User({
+//     genre : req.body.genre,
+//     nom : req.body.nom,
+//     prenom : req.body.prenom,
+//     email : req.body.email,
+//     mdp : hash,
+//     token: uid2(32),
+//     //datenaissance : req.body.datenaissance,
+//     manager : req.body.manager,
+//     poste : req.body.poste,
+//     service : req.body.service,
+//     equipe : req.body.equipe,
+//     RGPDqvt : req.body.RGPDqvt,
+//     RGPDParternaire : req.body.RGPDParternaire,
+//     cgu : req.body.cgu,
+//   });
+
+const reponse = ({
+  Q1 : req.body.Q1,
+  Q2 : req.body.Q2,
+  Q3 : req.body.Q3,
+})
+
+  data.QHebdo.push(reponse)
+  console.log (data);
+    res.json({ result: true});
+  
+} )
+  });
+
 module.exports = router;
