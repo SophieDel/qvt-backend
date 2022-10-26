@@ -39,7 +39,6 @@ const QHebdoSchema = mongoose.Schema ({
   Q3 : Number,
 });
 
-
 const userSchema = mongoose.Schema({
   genre: String,
   nom: String,
@@ -55,11 +54,11 @@ const userSchema = mongoose.Schema({
   RGPDqvt: Boolean,
   RGPDParternaire: Boolean,
   cgu: Boolean,
- // questionnaire: { type: mongoose.Schema.Types.ObjectId, ref: 'questionnaires' },
-
   questionnairePerso: questionnairePersoSchema,
   QHebdo : [QHebdoSchema],
-  });
+});
+
+
 
 
 
