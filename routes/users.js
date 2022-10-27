@@ -13,7 +13,7 @@ const bcrypt = require('bcryptjs');
 router.post('/signup', (req, res) => {
   console.log('req.body', req.body)
   if (!checkBody(req.body, ['nom', 'prenom', 'email', 'mdp', 'poste', 'genre', 'equipe', 'service', 'cgu', 'manager', 'RGPDParternaire', 'RGPDqvt'])){
-    res.json({ result: false, error: 'Missing or empty fields' });
+    res.json({ result: false, error: 'Merci de remplir tous les champs' });
     return;
   }
   //['genre', 'nom', 'prenom' , 'email', 'mdp', 'manager', 'poste', 'service', 'equipe' ,'RGPDqvt','RGPDParternaire','cgu']
@@ -46,7 +46,7 @@ router.post('/signup', (req, res) => {
       });
     } else {
       // User already exists in database
-      res.json({ result: false, error: 'User already exists' });
+      res.json({ result: false, error: 'Utilisateur déja existant. Renseigner un autre Email ou connectez-vous' });
     }
   });
 });
@@ -55,7 +55,7 @@ router.post('/signup', (req, res) => {
 //ROUTE SIGNIN
 router.post('/signin', (req, res) => {
   if (!checkBody(req.body, ['email', 'mdp'])) {
-    res.json({ result: false, error: 'Missing or empty fields' });
+    res.json({ result: false, error: 'Merci de remplir tous les champs' });
     return;
   }
 
@@ -63,7 +63,7 @@ router.post('/signin', (req, res) => {
     if (data && bcrypt.compareSync(req.body.mdp, data.mdp)) {
       res.json({ result: true, token: data.token });
     } else {
-      res.json({ result: false, error: 'User not found or wrong password' });
+      res.json({ result: false, error: 'Email ou mot de passe non reconnu' });
     }
   });
 });
