@@ -71,7 +71,7 @@ router.post('/MessageReponse', (req, res) => {
 //ROute récupération des messages du manager à un collab
 
 router.get('/MessageCollab/:token', (req, res) => {
-    Message.find({ token: req.params.token, repondu : true }).then(data => {
+    Message.find({ collab: req.params.token}).then(data => {
 
          res.json({data});
       });
