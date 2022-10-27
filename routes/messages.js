@@ -38,7 +38,7 @@ newMessage.save().then(data => {
 //ROute récupération des messages d'une équipe par le manager
 
 router.get('/MessageEquipe/:equipe', (req, res) => {
-    Message.find({ equipe: req.params.equipe }).then(data => {
+    Message.find({ equipe: req.params.equipe , repondu : false}).then(data => {
 
          res.json({data});
       });
