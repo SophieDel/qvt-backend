@@ -7,6 +7,8 @@ require("../models/connection");
 const User = require("../models/users");
 const { checkBody } = require("../modules/checkBody");
 
+const thunderClient = false; 
+
 router.post("/reponses", (req, res) => {
   const token = req.body.token;
 
@@ -16,9 +18,13 @@ router.post("/reponses", (req, res) => {
     return;
   }
 
+  let parsedReponses = thunderClient ? JSON.parse(req.body.reponses) : req.body.reponses
+  console.log("req.body.reponses", parsedReponses)
+  // On donne un tableau d'objet en entrée, il est stringnifié lors du post, et pour retrouver à nouveau le tableau on le parse avec Thunder Client.
+  // Si on passe par le front du site ce n'est pas la peine.
+
   if (token) {
-    let parsedReponses = JSON.parse(req.body.reponses)
-    // On donne un tableau d'objet en entrée, il est stringnifié lors du post, et pour retrouver à nouveau le tableau on le parse
+
     User.updateOne({ token: token }, { $set: { questionnairePerso: parsedReponses } })
     // On utilise set, car on écrase les réponses à chaque enregistrement
       .then((data) => {
@@ -35,7 +41,13 @@ router.post("/reponses", (req, res) => {
         res.json({ result: false, error: error });
       });
   } else {
-    res.json({ result: false, message: "Il n'y a pas d'utilisateur connecté" });
+    // res.json({ result: false, message: "Il n'y a pas d'utilisateur connecté" });
+    const newUser = new User({
+      token: "test",
+      questionnairePerso: parsedReponses
+    })
+    newUser.save().then(data => res.json({ result: true, test: data }))
+    ;
   }
 });
 
