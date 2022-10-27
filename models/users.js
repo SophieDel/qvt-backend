@@ -34,9 +34,29 @@ const questionnairePersoSchema = mongoose.Schema({
 
 //Tableau de sous documents pour acceuillir les résultats des questionnaires hebdo
 const QHebdoSchema = mongoose.Schema ({
+  semaine : Number,
   Q1 : Number,
   Q2 : Number,
   Q3 : Number,
+});
+
+//Tableau de sous documents pour acceuillir les messages envoyés
+const MessageEquipeSchema = mongoose.Schema ({
+  DateRecep : Date,
+  MessageRecu : String,
+  Destinataire : String,
+  DateReponse : Date,
+  MessageReponse : String,
+  Reponse : Boolean,
+});
+
+//Tableau de sous documents pour acceuillir les messages reçus
+const MessageMngerSchema = mongoose.Schema ({
+  DateEnvoi : Date,
+  Destinataire : String,
+  MessageEnvoi : String,
+  DateRetour : Date,
+  MessageRetour : String,
 });
 
 const userSchema = mongoose.Schema({
@@ -56,6 +76,8 @@ const userSchema = mongoose.Schema({
   cgu: Boolean,
   questionnairePerso: questionnairePersoSchema,
   QHebdo : [QHebdoSchema],
+  // MessageEquipe : [MessageEquipeSchema],
+  // MessageMnger : [MessageMngerSchema],
 });
 
 

@@ -41,8 +41,8 @@ router.post('/signup', (req, res) => {
       });
 
       newUser.save().then(data => {
-        res.json({ result: true, token: data.token });
-        console.log(data)
+        res.json({ result: true, token: data.token, equipe : data.equipe, manager: data.manager });
+        console.log("commentaire guigui",data)
       });
     } else {
       // User already exists in database
@@ -61,7 +61,7 @@ router.post('/signin', (req, res) => {
 
   User.findOne({ email: req.body.email }).then(data => {
     if (data && bcrypt.compareSync(req.body.mdp, data.mdp)) {
-      res.json({ result: true, token: data.token });
+      res.json({ result: true, token: data.token, equipe : data.equipe, manager: data.manager  });
     } else {
       res.json({ result: false, error: 'Email ou mot de passe non reconnu' });
     }
@@ -107,6 +107,7 @@ router.post('/Qhebdo/:token', (req, res) => {
     //   });
 
     const reponse = ({
+      semaine : req.body.semaine,
       Q1 : req.body.Q1,
       Q2 : req.body.Q2,
       Q3 : req.body.Q3,
@@ -115,6 +116,51 @@ router.post('/Qhebdo/:token', (req, res) => {
       data.QHebdo.push(reponse)
       data.save();
       console.log (data);
+        res.json({ result: true});
+      
+    } )
+  });
+
+
+
+
+//ROUTE Envoi d'un message à son manager
+router.post('/MessageMnger/:token', (req, res) => {
+ 
+  User.findOne({ token: req.params.token }).then(data => {
+  console.log (data.equipe)
+
+
+//Data2 = le manager
+// const dataMnger = User.findOne({ equipe: "equipe1" , manager : true })
+console.log (User.findOne({ equipe: 'equipe1' , manager : true }))
+
+//la date d'enoiv
+let currentdate = new Date();
+// console.log (currentdate);
+
+
+    //message envoyé au manager stocké chez le collab
+    const MessageManager = ({
+      DateEnvoi : currentdate,
+      // Destinataire : dataMnger.token,
+      MessageEnvoi : req.body.MessageEnvoi,
+    })
+
+    //message recu par le manager stocké chez le manager
+    const MessageEquipe = ({
+      DateRecep : currentdate,
+      Destinataire : req.params.token,
+      MessageRecu : req.body.MessageEnvoi,
+      Reponse : false,
+    })
+
+      data.MessageMnger.push(MessageManager)
+      // dataMnger.MessageEquipe.push(MessageEquipe)
+      data.save();
+      // dataMnger.save()
+      // console.log (data);
+      // console.log (dataMnger);
         res.json({ result: true});
       
     } )
