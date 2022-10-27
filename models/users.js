@@ -1,36 +1,40 @@
 const mongoose = require("mongoose");
 
-const questionnairePersoSchema = mongoose.Schema({
-  // Questions liées à la santé
-  Q11: String,
-  Q13: String,
-  Q14: String,
-  Q15: String,
-  Q20: String,
-  Q21: String,
-  // Questions liées aux conditions de travail
-  // horaires
-  Q5: String,
-  Q6: String,
-  Q7: String,
-  // Lieu
-  Q35: String,
-  Q38: String,
-  Q39: String,
-  // Questions liées à l'épanouissement au travail
-  Q41: String,
-  Q42: String,
-  Q43: String,
-  Q46: String,
-  Q47: String,
-  // Questions liées au stress
-  Q24: String,
-  Q25: String,
-  Q26: String,
-  Q29: String,
-  Q31: String,
-  Q34: String,
-});
+// const questionnairePersoSchema = mongoose.Schema({
+//   // Questions liées à la santé
+//   Q11: String,
+//   Q13: String,
+//   Q14: String,
+//   Q15: String,
+//   Q20: String,
+//   Q21: String,
+//   // Questions liées aux conditions de travail
+//   // horaires
+//   Q5: String,
+//   Q6: String,
+//   Q7: String,
+//   // Lieu
+//   Q35: String,
+//   Q38: String,
+//   Q39: String,
+//   // Questions liées à l'épanouissement au travail
+//   Q41: String,
+//   Q42: String,
+//   Q43: String,
+//   Q46: String,
+//   Q47: String,
+//   // Questions liées au stress
+//   Q24: String,
+//   Q25: String,
+//   Q26: String,
+//   Q29: String,
+//   Q31: String,
+//   Q34: String,
+// });
+
+const questionnairePersoSchema = mongoose.Schema(
+  { type : Array , "default" : [] },
+)
 
 const userSchema = mongoose.Schema({
   genre: String,
@@ -47,7 +51,9 @@ const userSchema = mongoose.Schema({
   RGPDqvt: Boolean,
   RGPDParternaire: Boolean,
   cgu: Boolean,
-  questionnairePerso: questionnairePersoSchema,
+  // questionnairePerso: questionnairePersoSchema,
+  // dans le MVP on fait sans sous-document, car il n'y a qu'un seul questionnaire perso rempli par utilisateur
+  questionnairePerso: { type : Array , "default" : [] },
 });
 
 const User = mongoose.model("users", userSchema);
