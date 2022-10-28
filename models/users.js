@@ -59,7 +59,7 @@ const userSchema = mongoose.Schema({
   RGPDqvt: Boolean,
   RGPDParternaire: Boolean,
   cgu: Boolean,
-  QHebdo : QHebdoSchema,
+  QHebdo : [QHebdoSchema],
   // questionnairePerso: questionnairePersoSchema,
   // dans le MVP on fait sans sous-document, car il n'y a qu'un seul questionnaire perso rempli par utilisateur
   questionnairePerso: { type : Array , "default" : [] },

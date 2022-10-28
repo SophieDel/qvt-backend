@@ -171,7 +171,8 @@ let currentdate = new Date();
 //ROute récupération de la semaine de saisie du dernier quanstionnaire hebdo
 router.get('/semaine/:token', (req, res) => {
   User.findOne({ token: req.params.token }).then(data => {
-       res.json({data: data});
+      if(data.QHebdo) {res.json({data: data.QHebdo})}
+      else {data=[]}
     });
 });
 
