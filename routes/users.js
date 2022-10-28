@@ -41,7 +41,7 @@ router.post('/signup', (req, res) => {
       });
 
       newUser.save().then(data => {
-        res.json({ result: true, token: data.token, equipe : data.equipe, manager: data.manager });
+        res.json({ result: true, token: data.token, equipe : data.equipe, manager: data.manager, nom : data.nom, prenom : data.prenom});
         console.log("commentaire guigui",data)
       });
     } else {
@@ -61,7 +61,7 @@ router.post('/signin', (req, res) => {
 
   User.findOne({ email: req.body.email }).then(data => {
     if (data && bcrypt.compareSync(req.body.mdp, data.mdp)) {
-      res.json({ result: true, token: data.token, equipe : data.equipe, manager: data.manager  });
+      res.json({ result: true, token: data.token, equipe : data.equipe, manager: data.manager, nom : data.nom, prenom : data.prenom});
     } else {
       res.json({ result: false, error: 'Email ou mot de passe non reconnu' });
     }
