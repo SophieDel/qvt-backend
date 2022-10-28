@@ -81,6 +81,7 @@ const userSchema = mongoose.Schema({
   // questionnairePerso: questionnairePersoSchema,
   // dans le MVP on fait sans sous-document, car il n'y a qu'un seul questionnaire perso rempli par utilisateur
   questionnairePerso: { type : Array , "default" : [] },
+  profil: String,
   // MessageEquipe : [MessageEquipeSchema],
   // MessageMnger : [MessageMngerSchema],
 });
