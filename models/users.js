@@ -36,6 +36,33 @@ const questionnairePersoSchema = mongoose.Schema(
   { type : Array , "default" : [] },
 )
 
+//Tableau de sous documents pour acceuillir les résultats des questionnaires hebdo
+const QHebdoSchema = mongoose.Schema ({
+  semaine : Number,
+  Q1 : Number,
+  Q2 : Number,
+  Q3 : Number,
+});
+
+//Tableau de sous documents pour acceuillir les messages envoyés
+const MessageEquipeSchema = mongoose.Schema ({
+  DateRecep : Date,
+  MessageRecu : String,
+  Destinataire : String,
+  DateReponse : Date,
+  MessageReponse : String,
+  Reponse : Boolean,
+});
+
+//Tableau de sous documents pour acceuillir les messages reçus
+const MessageMngerSchema = mongoose.Schema ({
+  DateEnvoi : Date,
+  Destinataire : String,
+  MessageEnvoi : String,
+  DateRetour : Date,
+  MessageRetour : String,
+});
+
 const userSchema = mongoose.Schema({
   genre: String,
   nom: String,
@@ -54,8 +81,14 @@ const userSchema = mongoose.Schema({
   // questionnairePerso: questionnairePersoSchema,
   // dans le MVP on fait sans sous-document, car il n'y a qu'un seul questionnaire perso rempli par utilisateur
   questionnairePerso: { type : Array , "default" : [] },
+  // MessageEquipe : [MessageEquipeSchema],
+  // MessageMnger : [MessageMngerSchema],
 });
 
-const User = mongoose.model("users", userSchema);
+
+
+
+
+const User = mongoose.model('users', userSchema);
 
 module.exports = User;
