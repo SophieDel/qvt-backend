@@ -9,6 +9,7 @@ const uid2 = require('uid2');
 const bcrypt = require('bcryptjs');
 
 
+
 //ROUTE SIGNUP
 router.post('/signup', (req, res) => {
   console.log('req.body', req.body)
@@ -42,7 +43,6 @@ router.post('/signup', (req, res) => {
 
       newUser.save().then(data => {
         res.json({ result: true, token: data.token, equipe : data.equipe, manager: data.manager, nom : data.nom, prenom : data.prenom});
-        console.log("commentaire guigui",data)
       });
     } else {
       // User already exists in database
@@ -166,6 +166,14 @@ let currentdate = new Date();
     } )
   });
 
+
+  
+//ROute récupération de la semaine de saisie du dernier quanstionnaire hebdo
+router.get('/semaine/:token', (req, res) => {
+  User.findOne({ token: req.params.token }).then(data => {
+       res.json({data: data});
+    });
+});
 
 
 
