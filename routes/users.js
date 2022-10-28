@@ -176,6 +176,14 @@ router.get('/semaine/:token', (req, res) => {
     });
 });
 
+ 
+//ROute récupération du questionnaire de la semaine pour mood du moment
+router.get('/Qsemaine/:token', (req, res) => {
+  User.findOne({ token: req.params.token }).then(data => {
+      if(data.QHebdo) {res.json({data: data.QHebdo})}
+      else {data=[]}
+    });
+});
 
 
 
