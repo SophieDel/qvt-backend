@@ -76,6 +76,7 @@ let currentdate = new Date();
 const newPlan = new Plan({
   datePlan : currentdate,
   message : req.body.message,
+  titre : req.body.titre,
   equipe : data.equipe,
   encours : true,
 });
