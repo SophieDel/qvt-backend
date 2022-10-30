@@ -178,7 +178,7 @@ router.post("/MessageMnger/:token", (req, res) => {
 });
 
 // Route pour obtenir les caractéristiques d'un user
-router.get("/", (req, res) => {
+router.post("/findAUserByToken", (req, res) => {
   User.findOne({ token: req.body.token }).then((data) =>
     res
       .json({ result: true, user: data }))

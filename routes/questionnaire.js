@@ -11,7 +11,7 @@ const { defineProfile } = require("../modules/defineProfile");
 
 inituleQuestions = require("../collections/intituleQuestionsPerso.json");
 
-const thunderClient = true;
+const thunderClient = false;
 
 router.post("/reponses", (req, res) => {
   const token = req.body.token ? req.body.token : "test";
@@ -25,10 +25,13 @@ router.post("/reponses", (req, res) => {
     return;
   }
 
+  console.log("req.body.reponses", req.body.reponses)
+
   const parsedReponses = thunderClient
     ? JSON.parse(req.body.reponses)
     : req.body.reponses;
 
+    console.log("parsedReponses", parsedReponses)
   const theme = defineProfile(
     (answersArray = parsedReponses),
     (intitulesArray = inituleQuestions)
@@ -38,6 +41,7 @@ router.post("/reponses", (req, res) => {
 
   // On donne un tableau d'objet en entrée, il est stringnifié lors du post, et pour retrouver à nouveau le tableau on le parse avec Thunder Client.
   // Si on passe par le front du site ce n'est pas la peine.
+  const test = true;
 
   if (token) {
     // Calcul du profil
@@ -52,24 +56,30 @@ router.post("/reponses", (req, res) => {
       .then((data) => {
         if (data.modifiedCount == 1) {
           // L'utilisateur a répondu
-          console.log("data =>", Array.isArray(parsedReponses));
-          res.json({ result: true, reponses: data });
-        } else if (token != "test") {
-          // L'utilisateur n'a pas été enreigistré
-          res.json({ result: false, message: "Aucun utilisateur trouvé" });
+          console.log("update user =>", data);
+          res.json({ result: true, reponses: data, profil: theme });
         } else {
-          // S'il n'y a pas de token test, on le créé
-          const newUser = new User({
-            token: "test",
-            questionnairePerso: parsedReponses,
+          // L'utilisateur n'a pas été enreigistré
+          res.json({
+            result: false,
+            message: "Aucun utilisateur trouvé",
             profil: theme,
           });
-          newUser.save().then((data) => res.json({ result: true, test: data }));
         }
       })
       .catch((error) => {
         res.json({ result: false, error: error });
       });
+  } else if (test) {
+    const newUser = new User({
+      token: "test",
+      questionnairePerso: parsedReponses,
+      profil: theme,
+    });
+    newUser.save().then((data) => {
+      console.log("user test created =>", data);
+      res.json({ result: true, test: data, profil: theme });
+    });
   }
 });
 
