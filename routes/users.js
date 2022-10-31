@@ -68,15 +68,8 @@ router.post("/signup", (req, res) => {
         cgu: req.body.cgu,
       });
 
-      newUser.save().then((data) => {
-        res.json({
-          result: true,
-          token: data.token,
-          equipe: data.equipe,
-          manager: data.manager,
-          nom: data.nom,
-          prenom: data.prenom,
-        });
+      newUser.save().then(data => {
+        res.json({ result: true, token: data.token, equipe : data.equipe, manager: data.manager, nom : data.nom, prenom : data.prenom});
       });
     } else {
       // User already exists in database
@@ -105,6 +98,7 @@ router.post("/signin", (req, res) => {
         manager: data.manager,
         nom: data.nom,
         prenom: data.prenom,
+        profil: data.profil
       });
     } else {
       res.json({ result: false, error: "Email ou mot de passe non reconnu" });
