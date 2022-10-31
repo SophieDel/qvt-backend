@@ -8,6 +8,19 @@ const uid2 = require("uid2");
 // const bcrypt = require('bcrypt');
 const bcrypt = require("bcryptjs");
 
+// ROUTE GET USER BY TOKEN
+router.post("/user", (req, res) => {
+  if (!checkBody(req.body, ["token"])) {
+    res.json({ result: false, error: "no user" });
+    return;
+  } else {
+    User.findOne({token: req.body.token})
+    .then(data => {
+      data ? res.json({result: true, user: data}) : res.json({result: false, message: "no user found in database"})
+    })
+    .catch(error => res.json({result: false, error: error}))
+  }
+})
 
 //ROUTE SIGNUP
 router.post("/signup", (req, res) => {
@@ -55,9 +68,15 @@ router.post("/signup", (req, res) => {
         cgu: req.body.cgu,
       });
 
-      newUser.save().then(data => {
-        res.json({ result: true, token: data.token, equipe : data.equipe, manager: data.manager, nom : data.nom, prenom : data.prenom});
-
+      newUser.save().then((data) => {
+        res.json({
+          result: true,
+          token: data.token,
+          equipe: data.equipe,
+          manager: data.manager,
+          nom: data.nom,
+          prenom: data.prenom,
+        });
       });
     } else {
       // User already exists in database
@@ -79,6 +98,14 @@ router.post("/signin", (req, res) => {
 
   User.findOne({ email: req.body.email }).then((data) => {
     if (data && bcrypt.compareSync(req.body.mdp, data.mdp)) {
+      res.json({
+        result: true,
+        token: data.token,
+        equipe: data.equipe,
+        manager: data.manager,
+        nom: data.nom,
+        prenom: data.prenom,
+      });
     } else {
       res.json({ result: false, error: "Email ou mot de passe non reconnu" });
     }
@@ -166,22 +193,27 @@ router.post("/MessageMnger/:token", (req, res) => {
     res.json({ result: true });
   });
 });
-  
+
 //ROute récupération de la semaine de saisie du dernier quanstionnaire hebdo
-router.get('/semaine/:token', (req, res) => {
-  User.findOne({ token: req.params.token }).then(data => {
-      if(data.QHebdo) {res.json({data: data.QHebdo})}
-      else {data=[]}
-    });
+router.get("/semaine/:token", (req, res) => {
+  User.findOne({ token: req.params.token }).then((data) => {
+    if (data) {
+      res.json({ data: data.QHebdo });
+    } else {
+      data = [];
+    }
+  });
 });
 
- 
 //ROute récupération du questionnaire de la semaine pour mood du moment
-router.get('/Qsemaine/:token', (req, res) => {
-  User.findOne({ token: req.params.token }).then(data => {
-      if(data.QHebdo) {res.json({data: data.QHebdo})}
-      else {data=[]}
-    });
+router.get("/Qsemaine/:token", (req, res) => {
+  User.findOne({ token: req.params.token }).then((data) => {
+    if (data) {
+      res.json({ data: data.QHebdo });
+    } else {
+      data = [];
+    }
+  });
 });
 
 module.exports = router;
