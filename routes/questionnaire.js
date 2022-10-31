@@ -25,19 +25,14 @@ router.post("/reponses", (req, res) => {
     return;
   }
 
-  console.log("req.body.reponses", req.body.reponses)
-
   const parsedReponses = thunderClient
     ? JSON.parse(req.body.reponses)
     : req.body.reponses;
 
-    console.log("parsedReponses", parsedReponses)
   const theme = defineProfile(
     (answersArray = parsedReponses),
     (intitulesArray = inituleQuestions)
   );
-
-  console.log("profil", theme);
 
   // On donne un tableau d'objet en entrée, il est stringnifié lors du post, et pour retrouver à nouveau le tableau on le parse avec Thunder Client.
   // Si on passe par le front du site ce n'est pas la peine.
@@ -49,15 +44,14 @@ router.post("/reponses", (req, res) => {
     // Mise à jour du profil utilisateur
     User.updateOne(
       { token: token },
-      { $set: { questionnairePerso: parsedReponses } },
-      { profil: theme }
+      { $set: { questionnairePerso: parsedReponses }, profil: theme  }
     )
       // On utilise set, car on écrase les réponses à chaque enregistrement
       .then((data) => {
         if (data.modifiedCount == 1) {
           // L'utilisateur a répondu
-          console.log("update user =>", data);
           res.json({ result: true, reponses: data, profil: theme });
+          User.findOne({token: token}).then(data => console.log("user updated ==>", data))
         } else {
           // L'utilisateur n'a pas été enreigistré
           res.json({
