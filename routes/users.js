@@ -171,7 +171,7 @@ let currentdate = new Date();
 //ROute récupération de la semaine de saisie du dernier quanstionnaire hebdo
 router.get('/semaine/:token', (req, res) => {
   User.findOne({ token: req.params.token }).then(data => {
-      if(data.QHebdo) {res.json({data: data.QHebdo})}
+      if(data) {res.json({data: data.QHebdo})}
       else {data=[]}
     });
 });
@@ -180,7 +180,7 @@ router.get('/semaine/:token', (req, res) => {
 //ROute récupération du questionnaire de la semaine pour mood du moment
 router.get('/Qsemaine/:token', (req, res) => {
   User.findOne({ token: req.params.token }).then(data => {
-      if(data.QHebdo) {res.json({data: data.QHebdo})}
+      if(data) {res.json({data: data.QHebdo})}
       else {data=[]}
     });
 });
