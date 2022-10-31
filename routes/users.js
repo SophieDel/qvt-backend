@@ -9,7 +9,7 @@ const uid2 = require("uid2");
 const bcrypt = require("bcryptjs");
 
 // ROUTE GET USER BY TOKEN
-router.post("/", (req, res) => {
+router.post("/user", (req, res) => {
   if (!checkBody(req.body, ["token"])) {
     res.json({ result: false, error: "no user" });
     return;
