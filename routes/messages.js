@@ -96,6 +96,31 @@ router.get('/PlanEquipe/:equipe', (req, res) => {
 });
 
 
+//ROUTE Mise à jour du statut du plan d'equipe par le manager à false pour qu'il ne s'affiche plus
+router.post('/PlanFalse', (req, res) => {
+      
+  Plan.updateOne(
+       {message : req.body.message},
+       {encours : false},
+   ).then(()=> {
+     res.json({ result: true});
+   })
+ } )
+
+//ROUTE Mise à jour des messages recus par le collab pour pouvoir en supprimer un
+router.post('/messagesup', (req, res) => {
+      
+  Message.deleteOne({message : req.body.message}
+      
+   ).then(()=> {
+     res.json({ result: true});
+   })
+  })
+ 
+
+
+
+
 
 
 
