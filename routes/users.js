@@ -98,7 +98,8 @@ router.post("/signin", (req, res) => {
         manager: data.manager,
         nom: data.nom,
         prenom: data.prenom,
-        profil: data.profil
+        profil: data.profil,
+        questionnairePerso: data.questionnairePerso
       });
     } else {
       res.json({ result: false, error: "Email ou mot de passe non reconnu" });
