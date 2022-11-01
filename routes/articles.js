@@ -40,12 +40,17 @@ router.post("/new", (req, res) => {
     .catch((error) => req.json({ result: false, error: error }));
 });
 
+// On affiche tous les articles
+router.get("/", (req, res) => {
+  Article.find()
+    .then((data) => res.json({ result: true, articles: data }))
+    .catch((error) => req.json({ result: false, error: error }));
+});
 // On affiche les articles qui correspondent au thème qui ressort du questionnaire
 router.get("/:theme", (req, res) => {
-  console.log(req.params)
+
   const theme = req.params.theme;
 
-  console.log(theme)
   // On vérifie que le thème apaprtient à la liste de thèmes
   if (!themes.includes(theme)) {
     res.json({
