@@ -246,4 +246,17 @@ router.get("/Qsemaine/:token", (req, res) => {
   });
 });
 
+//ROute récupération des résultats de l'ensemble des quiz de la semaine pour une équipe
+router.get("/:equipe/", (req, res) => {
+  User.find({ equipe: req.params.equipe }).then((data) => {
+    if (data) {
+      console.log(data)
+      res.json({ result: true, QHebdo: data.QHebdo, data: data });
+    } else {
+      res.json({ result: true, message: "aucune équipe trouvée" });
+    }
+  })
+  .catch(error => res.json({result: false, error: error}));
+});
+
 module.exports = router;
