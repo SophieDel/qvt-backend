@@ -8,19 +8,47 @@ const uid2 = require("uid2");
 // const bcrypt = require('bcrypt');
 const bcrypt = require("bcryptjs");
 
-// ROUTE GET USER BY TOKEN
+// ROUTE POST USER BY TOKEN
 router.post("/user", (req, res) => {
   if (!checkBody(req.body, ["token"])) {
     res.json({ result: false, error: "no user" });
     return;
   } else {
-    User.findOne({token: req.body.token})
-    .then(data => {
-      data ? res.json({result: true, user: data}) : res.json({result: false, message: "no user found in database"})
-    })
-    .catch(error => res.json({result: false, error: error}))
+    User.findOne({ token: req.body.token })
+      .then((data) => {
+        data
+          ? res.json({ result: true, user: data })
+          : res.json({ result: false, message: "no user found in database" });
+      })
+      .catch((error) => res.json({ result: false, error: error }));
   }
-})
+});
+
+// ROUTE PUT USER BY TOKEN
+
+router.post("/updateUser/", (req, res) => {
+  if (!checkBody(req.body, ["token", "infoName", "info"])) {
+    res.json({ result: false, error: "il manque des champs dans le body" });
+    return;
+  }
+
+  User.updateOne(
+    { token: req.body.token },
+    { [req.body.infoName]: req.body.info }
+  )
+    .then((data) => {
+      if (data.matchedCount === 0) {
+        res.json({ result: true, message: "Pas d'utilisateur trouvé", token: req.body.token, data: data});
+      } else if (data.modifiedCount === 0) {
+        res.json({ result: true, message: "Pas de mise à jour réalisé", token: req.body.token,data: data });
+      } else if (data.modifiedCount === 1) {
+        res.json({ result: true, message: "Un utilisateur mis à jour.", token: req.body.token, data: data });
+      } else {
+        res.json({ result: true, message: data });
+      }
+    })
+    .catch((error) => res.json({ result: false, error: error }));
+});
 
 //ROUTE SIGNUP
 router.post("/signup", (req, res) => {
@@ -68,8 +96,15 @@ router.post("/signup", (req, res) => {
         cgu: req.body.cgu,
       });
 
-      newUser.save().then(data => {
-        res.json({ result: true, token: data.token, equipe : data.equipe, manager: data.manager, nom : data.nom, prenom : data.prenom});
+      newUser.save().then((data) => {
+        res.json({
+          result: true,
+          token: data.token,
+          equipe: data.equipe,
+          manager: data.manager,
+          nom: data.nom,
+          prenom: data.prenom,
+        });
       });
     } else {
       // User already exists in database
@@ -99,7 +134,7 @@ router.post("/signin", (req, res) => {
         nom: data.nom,
         prenom: data.prenom,
         profil: data.profil,
-        questionnairePerso: data.questionnairePerso
+        questionnairePerso: data.questionnairePerso,
       });
     } else {
       res.json({ result: false, error: "Email ou mot de passe non reconnu" });
