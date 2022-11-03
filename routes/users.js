@@ -1,11 +1,9 @@
 var express = require("express");
 var router = express.Router();
-
 require("../models/connection");
 const User = require("../models/users");
 const { checkBody } = require("../modules/checkBody");
 const uid2 = require("uid2");
-// const bcrypt = require('bcrypt');
 const bcrypt = require("bcryptjs");
 
 // ROUTE POST USER BY TOKEN
@@ -25,7 +23,6 @@ router.post("/user", (req, res) => {
 });
 
 // ROUTE PUT USER BY TOKEN
-
 router.post("/updateUser/", (req, res) => {
   if (!checkBody(req.body, ["token", "infoName", "info"])) {
     res.json({ result: false, error: "il manque des champs dans le body" });
@@ -38,11 +35,26 @@ router.post("/updateUser/", (req, res) => {
   )
     .then((data) => {
       if (data.matchedCount === 0) {
-        res.json({ result: true, message: "Pas d'utilisateur trouvé", token: req.body.token, data: data});
+        res.json({
+          result: true,
+          message: "Pas d'utilisateur trouvé",
+          token: req.body.token,
+          data: data,
+        });
       } else if (data.modifiedCount === 0) {
-        res.json({ result: true, message: "Pas de mise à jour réalisé", token: req.body.token,data: data });
+        res.json({
+          result: true,
+          message: "Pas de mise à jour réalisé",
+          token: req.body.token,
+          data: data,
+        });
       } else if (data.modifiedCount === 1) {
-        res.json({ result: true, message: "Un utilisateur mis à jour.", token: req.body.token, data: data });
+        res.json({
+          result: true,
+          message: "Un utilisateur mis à jour.",
+          token: req.body.token,
+          data: data,
+        });
       } else {
         res.json({ result: true, message: data });
       }
@@ -72,9 +84,8 @@ router.post("/signup", (req, res) => {
     res.json({ result: false, error: "Merci de remplir tous les champs" });
     return;
   }
-  //['genre', 'nom', 'prenom' , 'email', 'mdp', 'manager', 'poste', 'service', 'equipe' ,'RGPDqvt','RGPDParternaire','cgu']
 
-  // Check if the user has not already been registered
+  // vérification que le user n'existe pas déja
   User.findOne({ email: req.body.email }).then((data) => {
     if (data === null) {
       const hash = bcrypt.hashSync(req.body.mdp, 10);
@@ -107,7 +118,7 @@ router.post("/signup", (req, res) => {
         });
       });
     } else {
-      // User already exists in database
+      // le User existe déja dans la DB
       res.json({
         result: false,
         error:
@@ -144,41 +155,15 @@ router.post("/signin", (req, res) => {
 
 //ROUTE MDP OUBLIE PRIO 24
 
-//ROUTE Questionnaire Hebdo
+//ROUTE saisie/envoi Questionnaire Hebdo
 router.post("/Qhebdo/:token", (req, res) => {
-  // if (!checkBody(req.body, ['nom', 'prenom', 'email', 'mdp', 'poste', 'genre', 'equipe', 'service', 'cgu', 'manager', 'RGPDParternaire', 'RGPDqvt'])){
-  //   res.json({ result: false, error: 'Merci de remplir tous les champs' });
-  //   return;
-  // }
-
   User.findOne({ token: req.params.token }).then((data) => {
-    // if (data === null) {
-    //   const hash = bcrypt.hashSync(req.body.mdp, 10);
-
-    //   const newUser = new User({
-    //     genre : req.body.genre,
-    //     nom : req.body.nom,
-    //     prenom : req.body.prenom,
-    //     email : req.body.email,
-    //     mdp : hash,
-    //     token: uid2(32),
-    //     //datenaissance : req.body.datenaissance,
-    //     manager : req.body.manager,
-    //     poste : req.body.poste,
-    //     service : req.body.service,
-    //     equipe : req.body.equipe,
-    //     RGPDqvt : req.body.RGPDqvt,
-    //     RGPDParternaire : req.body.RGPDParternaire,
-    //     cgu : req.body.cgu,
-    //   });
-
     const reponse = {
       semaine: req.body.semaine,
       Q1: req.body.Q1,
       Q2: req.body.Q2,
       Q3: req.body.Q3,
     };
-
     data.QHebdo.push(reponse);
     data.save();
     console.log(data);
@@ -189,20 +174,12 @@ router.post("/Qhebdo/:token", (req, res) => {
 //ROUTE Envoi d'un message à son manager
 router.post("/MessageMnger/:token", (req, res) => {
   User.findOne({ token: req.params.token }).then((data) => {
-    console.log(data.equipe);
-
-    //Data2 = le manager
-    // const dataMnger = User.findOne({ equipe: "equipe1" , manager : true })
-    console.log(User.findOne({ equipe: "equipe1", manager: true }));
-
     //la date d'enoiv
     let currentdate = new Date();
-    // console.log (currentdate);
 
     //message envoyé au manager stocké chez le collab
     const MessageManager = {
       DateEnvoi: currentdate,
-      // Destinataire : dataMnger.token,
       MessageEnvoi: req.body.MessageEnvoi,
     };
 
@@ -215,16 +192,12 @@ router.post("/MessageMnger/:token", (req, res) => {
     };
 
     data.MessageMnger.push(MessageManager);
-    // dataMnger.MessageEquipe.push(MessageEquipe)
     data.save();
-    // dataMnger.save()
-    // console.log (data);
-    // console.log (dataMnger);
     res.json({ result: true });
   });
 });
 
-//ROute récupération de la semaine de saisie du dernier quanstionnaire hebdo
+//Route récupération de la semaine de saisie du dernier quanstionnaire hebdo
 router.get("/semaine/:token", (req, res) => {
   User.findOne({ token: req.params.token }).then((data) => {
     if (data) {
@@ -235,7 +208,7 @@ router.get("/semaine/:token", (req, res) => {
   });
 });
 
-//ROute récupération du questionnaire de la semaine pour mood du moment
+//Route récupération du questionnaire de la semaine pour mood du moment
 router.get("/Qsemaine/:token", (req, res) => {
   User.findOne({ token: req.params.token }).then((data) => {
     if (data) {
@@ -246,17 +219,18 @@ router.get("/Qsemaine/:token", (req, res) => {
   });
 });
 
-//ROute récupération des résultats de l'ensemble des quiz de la semaine pour une équipe
+//Route récupération des résultats de l'ensemble des quiz de la semaine pour une équipe
 router.get("/:equipe/", (req, res) => {
-  User.find({ equipe: req.params.equipe }).then((data) => {
-    if (data) {
-      console.log(data)
-      res.json({ result: true, QHebdo: data.QHebdo, data: data });
-    } else {
-      res.json({ result: true, message: "aucune équipe trouvée" });
-    }
-  })
-  .catch(error => res.json({result: false, error: error}));
+  User.find({ equipe: req.params.equipe })
+    .then((data) => {
+      if (data) {
+        console.log(data);
+        res.json({ result: true, QHebdo: data.QHebdo, data: data });
+      } else {
+        res.json({ result: true, message: "aucune équipe trouvée" });
+      }
+    })
+    .catch((error) => res.json({ result: false, error: error }));
 });
 
 module.exports = router;

@@ -5,7 +5,7 @@ const articleSchema = mongoose.Schema({
   titre: String,
   resume: String,
   illustration: String,
-  lien: String
+  lien: String,
 });
 
 const Article = mongoose.model("articles", articleSchema);

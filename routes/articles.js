@@ -48,7 +48,6 @@ router.get("/", (req, res) => {
 });
 // On affiche les articles qui correspondent au thème qui ressort du questionnaire
 router.get("/:theme", (req, res) => {
-
   const theme = req.params.theme;
 
   // On vérifie que le thème apaprtient à la liste de thèmes
