@@ -1,0 +1,23 @@
+[
+  {
+    "Q47": {
+      "question": "Globalement, ce que je fais dans mon travail (exigences, variété, utilité, …)",
+      "reponse": [
+        "me contrarie fortement",
+        "ne me convient pas",
+        "je fais avec",
+        "me convient",
+        "contribue à mon épanouissement"
+      ],
+      "theme": "épanouissement"
+    }
+  },
+
+  {
+    "Q24": {
+      "question": "Je me sens stressé(e) par mon travail",
+      "reponse": ["en permanence", "souvent", "parfois", "rarement", "jamais"],
+      "theme": "stress"
+    }
+  }
+]
