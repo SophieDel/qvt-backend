@@ -5,7 +5,7 @@ const { checkBody } = require("../modules/checkBody");
 const Article = require("../models/articles");
 
 // Liste des thèmes définis
-const themes = ["santé", "stress", "épanouissement", "conditions de travail"];
+const themes = ["santé", "stress", "épanouissement", "conditions_de_travail"];
 
 router.post("/new", (req, res) => {
   // Par cette route on ajoute un nouvel article dans la base de données
