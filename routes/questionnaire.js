@@ -15,6 +15,7 @@ const thunderClient = false;
 
 router.post("/reponses", (req, res) => {
   const token = req.body.token ? req.body.token : "test";
+  console.log("req.body.token", req.body.token)
   // A l'origine on voulait que le post ne soit pas possible dans ce cas
   // (res.json({ result: false, message: "Il n'y a pas d'utilisateur connecté" }))
   // mais il est utile pour tester de pouvoir le faire sans utilisateur connecté
@@ -44,7 +45,9 @@ router.post("/reponses", (req, res) => {
     // Mise à jour du profil utilisateur
     User.updateOne(
       { token: token },
-      { $set: { questionnairePerso: parsedReponses }, profil: theme }
+      { $set: { 
+        questionnairePerso: parsedReponses,
+        profil: theme  }}
     )
       // On utilise set, car on écrase les réponses à chaque enregistrement
       .then((data) => {
